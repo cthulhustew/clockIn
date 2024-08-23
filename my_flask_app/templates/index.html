@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock In/Out</title>
+    <script>
+        async function clockIn() {
+            const response = await fetch('/clock_in', { method: 'POST' });
+            const result = await response.json();
+            alert(result.message);
+        }
+
+        async function clockOut() {
+            const response = await fetch('/clock_out', { method: 'POST' });
+            const result = await response.json();
+            alert(result.message);
+        }
+    </script>
+</head>
+<body>
+    <h1>Clock In/Out System</h1>
+    <button onclick="clockIn()">Clock In</button>
+    <button onclick="clockOut()">Clock Out</button>
+</body>
+</html>
