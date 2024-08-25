@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify, render_template
 from pymongo import MongoClient
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env
 
 app = Flask(__name__)
 
@@ -15,8 +18,8 @@ else:
 
 # MongoDB connection function
 def get_db_connection():
-    client = MongoClient(os.getenv('mongodb+srv://cthulhustew:<Klopskerl123$$$>@cluster0.3pyae.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'))  # Use the MONGO_URI from environment variables
-    db = client.get_database('martinaClockIn')  # Replace 'your_database_name' with your actual database name
+    client = MongoClient(os.getenv('mongodb+srv://cthulhustew:Klopskerl123%24%24%24@cluster0.mongodb.net/martinaClockIn?retryWrites=true&w=majority'))
+    db = client.get_database('martinaClockIn')  # Use your actual database name
     return db
 
 # Route for the homepage
