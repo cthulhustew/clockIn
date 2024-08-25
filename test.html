@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock In/Out</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            margin-bottom: 1.5rem;
+            color: #007bff;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        h1:hover {
+            color: #0056b3;
+        }
+
+        button {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 12px 24px;
+            margin: 10px;
+            outline: none;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #0056b3, #004494);
+            transform: scale(1.1);
+        }
+
+        button:active {
+            transform: scale(1.05);
+        }
+
+        button.clock-out {
+            background: linear-gradient(90deg, #dc3545, #c82333);
+        }
+
+        button.clock-out:hover {
+            background: linear-gradient(90deg, #c82333, #b52e2e);
+            transform: scale(1.1);
+        }
+    </style>
+    <script>
+        const CLOCK_IN_URL = 'https://script.google.com/macros/s/AKfycbz6sUHpIheA_kW6SAHDQKmKZjFO0sIJi9uII5oceaxV4zp8KE7yU83b-vHRVMeeSDM/exec'; // Replace with your Web App URL
+
+        async function clockIn() {
+            try {
+                const response = await fetch(CLOCK_IN_URL, { method: 'POST' });
+                const result = await response.json();
+                alert(result.message);
+            } catch (error) {
+                alert('An error occurred while clocking in.');
+                console.error('Error:', error);
+            }
+        }
+
+        async function clockOut() {
+            const response = await fetch('/clock_out', { method: 'POST' });
+            const result = await response.json();
+            alert(result.message);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Martinas time management system</h1>
+        <button onclick="clockIn()">Clock In</button>
+        <button class="clock-out" onclick="clockOut()">Clock Out</button>
+    </div>
+</body>
+</html>
