@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-import sqlite3
+from pymongo import MongoClient
 from datetime import datetime
 import os
 
@@ -13,19 +13,11 @@ else:
     app.config["ENV"] = "development"
     app.config["DEBUG"] = True
 
-# Initialize SQLite database
-def init_db():
-    conn = sqlite3.connect('time_records.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS records (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            action TEXT NOT NULL,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-    conn.commit()
-    conn.close()
+# MongoDB connection function
+def get_db_connection():
+    client = MongoClient(os.getenv('mongodb+srv://cthulhustew:<Klopskerl123$$$>@cluster0.3pyae.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'))  # Use the MONGO_URI from environment variables
+    db = client.get_database('martinaClockIn.martina')  # Replace 'your_database_name' with your actual database name
+    return db
 
 # Route for the homepage
 @app.route('/')
@@ -35,23 +27,24 @@ def home():
 # Route for clocking in
 @app.route('/clock_in', methods=['POST'])
 def clock_in():
-    conn = sqlite3.connect('time_records.db')
-    cursor = conn.cursor()
-    cursor.execute('INSERT INTO records (action) VALUES (?)', ('Clock In',))
-    conn.commit()
-    conn.close()
+    db = get_db_connection()
+    record = {
+        'action': 'Clock In',
+        'timestamp': datetime.utcnow()
+    }
+    db.records.insert_one(record)
     return jsonify({"message": "Clocked In successfully", "status": "success"})
 
 # Route for clocking out
 @app.route('/clock_out', methods=['POST'])
 def clock_out():
-    conn = sqlite3.connect('time_records.db')
-    cursor = conn.cursor()
-    cursor.execute('INSERT INTO records (action) VALUES (?)', ('Clock Out',))
-    conn.commit()
-    conn.close()
+    db = get_db_connection()
+    record = {
+        'action': 'Clock Out',
+        'timestamp': datetime.utcnow()
+    }
+    db.records.insert_one(record)
     return jsonify({"message": "Clocked Out successfully", "status": "success"})
 
 if __name__ == '__main__':
-    init_db()
     app.run()
