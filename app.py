@@ -16,7 +16,7 @@ else:
 # MongoDB connection function
 def get_db_connection():
     client = MongoClient(os.getenv('mongodb+srv://cthulhustew:<Klopskerl123$$$>@cluster0.3pyae.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'))  # Use the MONGO_URI from environment variables
-    db = client.get_database('martinaClockIn.martina')  # Replace 'your_database_name' with your actual database name
+    db = client.get_database('martinaClockIn')  # Replace 'your_database_name' with your actual database name
     return db
 
 # Route for the homepage
